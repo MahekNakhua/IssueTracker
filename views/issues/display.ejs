@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View issue</title>
+</head>
+<body>
+    <h1>Issue id <%= issue._id %> </h1>
+    <li>TITLE : <%= issue.title %> </li>
+    <li>DESCRIPTION : <%= issue.description %> </li>
+    <li>PRIORITY : <%= issue.priority %> </li>
+    <li>STATUS : <%= issue.status %> </li>
+    <li>SUBMITTED BY  : <%= issue.identified_by %> </li>
+    <li>ASSIGNED TO  : <%= issue.assigned_to %> </li>
+    <hr>
+    <br>
+    <a href="/issues">All Issues</a>
+    <br>
+    <a href="/issues/<%=issue._id%>/edit">Edit Issue</a>
+    <br>
+    <form action="/issues/<%=issue._id%>?_method=DELETE" method="POST">
+        <button>Delete Issue</button>
+    </form>
+</body>
+</html>
