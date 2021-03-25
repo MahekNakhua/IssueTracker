@@ -15,6 +15,7 @@ const issueSchema = new Schema({
         type: String,
         enum: ['High', 'Medium', 'Low']
     },
+    images: [String], //url
 });
 
 

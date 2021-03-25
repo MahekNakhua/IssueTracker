@@ -1,26 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Issue Index</title>
-</head>
-
-<body>
+<% layout('layouts/boilerplate') %>
     <h1>All Issues</h1>
     <a href="issues/new">Add an issue</a>
-    <ul>
-        <% for(let issue of issues) {%>
-            <a href="issues/<%=issue._id%>">
-                <li>TITLE : <%= issue.title %>
-                </li>
-            </a>
-            <br>
-            <% } %>
-    </ul>
 
-</body>
-
-</html>
+    <section id="gallery">
+        <div class="container">
+            <div class="row">
+                <% for(let issue of issues) {%>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card cardIssue">
+                            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+                                alt="" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= issue.title %>
+                                </h5>
+                                <p class="card-text shorten">
+                                    <%= issue.description %>
+                                </p>
+                                <a href="issues/<%=issue._id%>" class="btn btn-sm btn-readMore">Read
+                                    More</a>
+                                <!-- <a href="" class="btn btn-outline-danger btn-sm"><i class="far fa-heart"></i></a> -->
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+        </div>
+    </section>
