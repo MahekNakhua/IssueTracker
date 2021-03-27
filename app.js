@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
+const wrapAsync = require('./utils/WrapAsync');
+const ExpressError = require('./utils/ExpressError');
+const Joi = require('joi');
 const session = require('express-session');
 // const {adminSchema, projectmanagerSchema, developerSchema, submitterSchema,projectSchema, issueSchema} = require('./validationSchemas')
 
@@ -39,25 +42,43 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 // app.use(express.static('public'))
 app.use(express.static(__dirname + '/public'));
+// // app.use(express.static(path.join(__dirname, 'public')))
+
+
+const validateIssue = (req, res, next) => {
+    const issueSchema = Joi.object({
+        title: Joi.string().min(3).max(50).required(),
+        description: Joi.string().required(),
+        priority: Joi.string().valid(...['High', 'Medium', 'Low']).required(),
+        status: Joi.string().valid(...['Unassigned', 'Assigned', 'Resolved']).required(),
+        images: Joi.string().required(),   //url sorta?!
+        identified_by: Joi.string(),
+        identified_date: Joi.date(),
+        assigned_to: Joi.string(), //chnage to ref later
+    })
+
+    const issue = new Issue(req.body);
+    const { error } = issueSchema.validate(issue);
+    if (error) {
+        const msg = error.details.map(ele => ele.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next()
+    }
+
+}
+
 
 app.get('/', (req, res) => {
     res.render('dashboard')
 })
 
 
-// app.get('/newissue', async (req, res) => {
-//     const newIssue = new Issue({ title: 'My First bug', description: 'yadedada', assigned_to: "meh", status: 'Assigned', priority: 'High' });
-//     // newIssue.markModified('issues')
-//     await newIssue.save()
-//     console.log('issue saved')
-//     res.send(newIssue)
-// })
-
-app.get('/issues', async (req, res) => {
+app.get('/issues', wrapAsync(async (req, res) => {
     const issues = await Issue.find({});
     // res.send(issues)
     res.render('issues/index', { issues })
-});
+}));
 
 
 
@@ -66,55 +87,58 @@ app.get('/issues/new', (req, res) => {
 })
 //add new issue pt1
 
-app.post('/issues', async (req, res) => {
-    const issue = new Issue(req.body.issue);
+app.post('/issues', validateIssue, wrapAsync(async (req, res) => {
+
     await issue.save();
-    // res.send(issue)
     //TODO to set priority, status, submitted by, assigned to
     res.redirect(`/issues/${issue._id}`)
-})
+}))
 //add new issue pt2
 
 
 
 
-app.get('/issues/:id', async (req, res,) => {
+app.get('/issues/:id', wrapAsync(async (req, res, next) => {
     const issue = await Issue.findById(req.params.id)
     res.render('issues/display', { issue });
-});
+}));
 //retrive an issue
 
 
 
-app.get('/issues/:id/edit', async (req, res) => {
+app.get('/issues/:id/edit', wrapAsync(async (req, res) => {
     const issue = await Issue.findById(req.params.id)
     res.render('issues/editForm', { issue });
-})
+}))
 //edit an issue pt1
 
-app.put('/issues/:id', async (req, res) => {
+app.put('/issues/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     const issue = await Issue.findByIdAndUpdate(id, { ...req.body.issue });
     res.redirect(`/issues/${issue._id}`)
-});
+}));
 // //edit an issue pt2
 
 
 
 
-app.delete('/issues/:id', async (req, res) => {
+app.delete('/issues/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Issue.findByIdAndDelete(id);
     res.redirect('/issues');
-})
+}))
 //delete an issue
 
 
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found :(', 404))
+})
 
-
-
-
-
+app.use((err, req, res, next) => {
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = 'Oops, Something Went Wrong!'
+    res.status(statusCode).render('error', { err })
+})
 
 
 
@@ -124,7 +148,6 @@ app.delete('/issues/:id', async (req, res) => {
 app.listen(3000, () => {
     console.log('app is listening on port 3000!'.toUpperCase())
 })
-// // app.use(express.static(path.join(__dirname, 'public')))
 
 
 

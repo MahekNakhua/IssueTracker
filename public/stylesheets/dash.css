@@ -119,9 +119,9 @@ span {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    /* background: #6d7fcc; */
+    background: #01081F;
     /* background: #BD54F2; */
-    background: #00284E;
+    /* background: #00284E; */
 }
 
 #sidebar .sidebar-header strong {
@@ -261,6 +261,27 @@ a.article:hover {
     }
 }
 
+.btn-dashboard, .btn-dashboard:active, .btn-dashboard:visited{
+    border: none;
+    background: #01081F;
+    color: #fafafa !important;
+    font-weight: 100;
+    padding: 0.2rem;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+}
+
+.btn-dashboard:hover{
+
+    color: rgb(226, 245, 250) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.09rem;
+    background: none;
+    transition: all 0.3s ease 0s;
+
+}
 
 
 /* index of Issues */

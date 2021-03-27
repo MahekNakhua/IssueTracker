@@ -27,11 +27,11 @@
                     </li>
                     <li class="list-group-item cardItems"></li>
                 </ul>
-                <div class="card-body">
-                    <a class="card-link btn btn-info btn-readMore btn-sm" href="/issues/<%=issue._id%>/edit">Edit
+                <div class="card-body" style="display: flex; align-items: center; justify-content: space-around;">
+                    <a class="card-link btn btn-info btn-readMore" href="/issues/<%=issue._id%>/edit">Edit
                         Issue</a>
                     <form class="d-inline" action="/issues/<%=issue._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-sm btn-readMore">Delete Issue</button>
+                        <button class="btn btn-readMore">Delete Issue</button>
                     </form>
                 </div>
                 <!-- <div class="card-footer text-muted">
