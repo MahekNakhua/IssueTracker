@@ -8,6 +8,11 @@ const wrapAsync = require('./utils/WrapAsync');
 const ExpressError = require('./utils/ExpressError');
 const Joi = require('joi');
 const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const flash = require('connect-flash');
+const issueRoutes = require('./routes/issues')
+const userRoutes = require('./routes/user')
 // const {adminSchema, projectmanagerSchema, developerSchema, submitterSchema,projectSchema, issueSchema} = require('./validationSchemas')
 
 // const adminSchema = require('./models/admin')
@@ -18,11 +23,12 @@ const session = require('express-session');
 // const issueSchema = require('./models/issue')
 
 const Issue = require('./models/issuesTemp')
-
+const User = require('./models/user')
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 const db = mongoose.connection;
@@ -40,95 +46,43 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-// app.use(express.static('public'))
-app.use(express.static(__dirname + '/public'));
-// // app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')))
 
-
-const validateIssue = (req, res, next) => {
-    const issueSchema = Joi.object({
-        title: Joi.string().min(3).max(50).required(),
-        description: Joi.string().required(),
-        priority: Joi.string().valid(...['High', 'Medium', 'Low']).required(),
-        status: Joi.string().valid(...['Unassigned', 'Assigned', 'Resolved']).required(),
-        images: Joi.string().required(),   //url sorta?!
-        identified_by: Joi.string(),
-        identified_date: Joi.date(),
-        assigned_to: Joi.string(), //chnage to ref later
-    })
-
-    const issue = new Issue(req.body);
-    const { error } = issueSchema.validate(issue);
-    if (error) {
-        const msg = error.details.map(ele => ele.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next()
+const sessionConfig = {
+    secret: 'insertasecret!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
     }
-
 }
+app.use(session(sessionConfig))
+app.use(flash());
 
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-app.get('/', (req, res) => {
-    res.render('dashboard')
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
 })
 
 
-app.get('/issues', wrapAsync(async (req, res) => {
-    const issues = await Issue.find({});
-    // res.send(issues)
-    res.render('issues/index', { issues })
-}));
 
 
+// app.get('/', (req, res) => {
+//     res.render('homepage')
+// })
 
-app.get('/issues/new', (req, res) => {
-    res.render('issues/newForm');
-})
-//add new issue pt1
-
-app.post('/issues', validateIssue, wrapAsync(async (req, res) => {
-
-    await issue.save();
-    //TODO to set priority, status, submitted by, assigned to
-    res.redirect(`/issues/${issue._id}`)
-}))
-//add new issue pt2
-
-
-
-
-app.get('/issues/:id', wrapAsync(async (req, res, next) => {
-    const issue = await Issue.findById(req.params.id)
-    res.render('issues/display', { issue });
-}));
-//retrive an issue
-
-
-
-app.get('/issues/:id/edit', wrapAsync(async (req, res) => {
-    const issue = await Issue.findById(req.params.id)
-    res.render('issues/editForm', { issue });
-}))
-//edit an issue pt1
-
-app.put('/issues/:id', wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const issue = await Issue.findByIdAndUpdate(id, { ...req.body.issue });
-    res.redirect(`/issues/${issue._id}`)
-}));
-// //edit an issue pt2
-
-
-
-
-app.delete('/issues/:id', wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await Issue.findByIdAndDelete(id);
-    res.redirect('/issues');
-}))
-//delete an issue
-
+app.use('/', userRoutes);
+app.use('/issues', issueRoutes)
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found :(', 404))
