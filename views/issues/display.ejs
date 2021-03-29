@@ -19,12 +19,10 @@
                     <li class="list-group-item text-muted cardItems"> Status -
                         <%= issue.status%>
                     </li>
-                    <li class="list-group-item text-muted cardItems"> Submitted By :
-                        <%= issue.submitted_by%>
+                    <li class="list-group-item text-muted cardItems"> Identified By -
+                        <%= issue.identified_by.username%>
                     </li>
-                    <li class="list-group-item cardItems"> Assigned To -
-                        <%= issue.assigned_to%>
-                    </li>
+                    <!-- add assigned to -->
                     <li class="list-group-item cardItems"></li>
                 </ul>
                 <div class="card-body" style="display: flex; align-items: center; justify-content: space-around;">

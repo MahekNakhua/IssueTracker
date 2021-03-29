@@ -4,9 +4,15 @@ const Schema = mongoose.Schema;
 const issueSchema = new Schema({
     title: String,
     description: String,
-    identified_by: String,
+    identified_by: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     identified_date: Date,
-    assigned_to: String,
+    assigned_to: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     status: {
         type: String,
         enum: ['Unassigned', 'Assigned', 'Resolved'],

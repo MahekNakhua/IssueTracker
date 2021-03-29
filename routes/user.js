@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require('passport');
 const wrapAsync = require('../utils/wrapAsync');
 const User = require('../models/user');
+const { notAlreadyLoggedin } = require('../middleware');
 
 router.get('/register', (req, res) => {
     res.render('users/register');
@@ -24,16 +25,14 @@ router.post('/register', wrapAsync(async (req, res, next) => {
     }
 }));
 
-router.get('/login', (req, res) => {
+router.get('/login', notAlreadyLoggedin, (req, res) => {
     res.render('users/login');
 })
 
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
-    // req.flash('success', 'Welcome Back!');
-    // const redirectUrl = req.session.returnTo || '/issues';
-    // delete req.session.returnTo;
-    // res.redirect(redirectUrl);
-    res.redirect('/issues')
+    const redirectUrl = req.session.returnTo || '/issues';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
 })
 
 router.get('/logout', (req, res) => {

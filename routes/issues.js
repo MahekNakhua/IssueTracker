@@ -4,8 +4,8 @@ const wrapAsync = require('../utils/WrapAsync');
 const ExpressError = require('../utils/ExpressError');
 const Issue = require('../models/issuesTemp');
 const Joi = require('joi');
-const { isLoggedIn } = require('../middleware')
-
+const { isLoggedIn, hasAccess } = require('../middleware')
+let identifiedByUser;
 // const validateIssue = (req, res, next) => {
 //     const issueSchema = Joi.object({
 //         issue: Joi.object({
@@ -45,7 +45,12 @@ router.get('/new', isLoggedIn, (req, res) => {
 })
 router.post('/', isLoggedIn, wrapAsync(async (req, res) => {
     const issue = new Issue(req.body.issue)
+    issue.status = 'Unassigned';
+    identifiedByUser = req.user;
+    issue.identified_by = identifiedByUser._id;
+    console.log(issue)
     await issue.save();
+    // const updateIssue = Issue.findByIdAndUpdate(issue._id, { $set: { identified_by: identifiedByUser } }, { new: true })
     req.flash('success', "Successfully added an issue")
     //TODO to set priority, status, submitted by, assigned to
     res.redirect(`/issues/${issue._id}`)
@@ -55,7 +60,8 @@ router.post('/', isLoggedIn, wrapAsync(async (req, res) => {
 
 
 router.get('/:id', wrapAsync(async (req, res, next) => {
-    const issue = await Issue.findById(req.params.id)
+    const issue = await Issue.findById(req.params.id).populate('assigned_to').populate('identified_by');
+    console.log(issue)
     if (!issue) {
         req.flash('error', 'Issue not found!');
         return res.redirect('/issues');
@@ -64,16 +70,16 @@ router.get('/:id', wrapAsync(async (req, res, next) => {
 }));
 
 
-
-router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
-    const issue = await Issue.findById(req.params.id)
+//TODO define edit access and all
+router.get('/:id/edit', isLoggedIn, hasAccess, wrapAsync(async (req, res) => {
+    const issue = await (await Issue.findById(req.params.id)).populate('assigned_to').populate('identified_by');
     if (!issue) {
         req.flash('error', 'Issue not found!');
         return res.redirect('/issues');
     }
     res.render('issues/editForm', { issue });
 }))
-router.put('/:id', isLoggedIn, wrapAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, hasAccess, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const issue = await Issue.findByIdAndUpdate(id, { ...req.body.issue });
     req.flash('success', "Successfully updated the issue")
@@ -83,7 +89,7 @@ router.put('/:id', isLoggedIn, wrapAsync(async (req, res) => {
 
 
 
-router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, hasAccess, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Issue.findByIdAndDelete(id);
     req.flash('success', "Successfully deleted the issue")

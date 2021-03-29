@@ -81,24 +81,29 @@
                         FAQ
                     </a>
                 </li>
-                <li>
-                    <a href="#">
-                        <i class="fas fa-paper-plane"></i>
-                        Contact
-                    </a>
-                </li>
+                <% if (currentUser){ %> 
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-paper-plane"></i>
+                            <%=currentUser.username%>
+                        </a>
+                    </li>
+                <% } %> 
             </ul>
 
             <ul class="list-unstyled CTAs">
+                <% if (!currentUser){ %> 
                 <li>
                     <a href="/login" class="article">Login</a>
                 </li>
                 <li>
                     <a href="/register" class="article">Register</a>
                 </li>
+                <% } else { %> 
                 <li>
                     <a href="/logout" class="article">Logout</a>
                 </li>
+                <% } %> 
             </ul>
         </nav>
 
