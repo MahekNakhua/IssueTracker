@@ -22,11 +22,17 @@
                     <li class="list-group-item text-muted cardItems"> Identified By -
                         <%= issue.identified_by.username%>
                     </li>
-                    <!-- add assigned to -->
+                    <% if(issue.assigned_to.username && issue.assigned_to.username.length) { %> 
+                        <% if(issue.status != "Unassigned") { %> 
+                            <li class="list-group-item cardItems"> Assigned To -
+                                <%= issue.assigned_to.username%>
+                            </li>
+                        <% } %> 
+                    <% } %> 
                     <li class="list-group-item cardItems"></li>
                 </ul>
                 <div class="card-body" style="display: flex; align-items: center; justify-content: space-around;">
-                    <a class="card-link btn btn-info btn-readMore" href="/issues/<%=issue._id%>/edit">Edit
+                    <a class="card-link btn btn-readMore" href="/issues/<%=issue._id%>/edit">Edit
                         Issue</a>
                     <form class="d-inline" action="/issues/<%=issue._id%>?_method=DELETE" method="POST">
                         <button class="btn btn-readMore">Delete Issue</button>

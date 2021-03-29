@@ -26,9 +26,10 @@ const seedDB = async () => {
         const random2 = Math.floor(Math.random() * descriptors.length);
         const random3 = Math.floor(Math.random() * statuses.length);
         const random4 = Math.floor(Math.random() * priorities.length)
-        const newIssue = new Issue({ title: titles[random1], description: descriptors[random2], assigned_to: "605f249133d6e84ff4e02dec", identified_by: "605f3a99c65298351cb5c4fd", status: statuses[random3], priority: priorities[random4] })
+        const newIssue = new Issue({ title: titles[random1], description: descriptors[random2], assigned_to: mongoose.Types.ObjectId('605f249133d6e84ff4e02dec'), identified_by: mongoose.Types.ObjectId('6061f3e0f031f63d4c124cfc'), status: statuses[random3], priority: priorities[random4] })
         await newIssue.save();
     }
+    console.log("Seeded The Database");
 }
 
 seedDB().then(() => {

@@ -3,6 +3,7 @@ const router = express.Router()
 const wrapAsync = require('../utils/WrapAsync');
 const ExpressError = require('../utils/ExpressError');
 const Issue = require('../models/issuesTemp');
+const User = require('../models/user')
 const Joi = require('joi');
 const { isLoggedIn, hasAccess } = require('../middleware')
 let identifiedByUser;
@@ -48,9 +49,7 @@ router.post('/', isLoggedIn, wrapAsync(async (req, res) => {
     issue.status = 'Unassigned';
     identifiedByUser = req.user;
     issue.identified_by = identifiedByUser._id;
-    console.log(issue)
     await issue.save();
-    // const updateIssue = Issue.findByIdAndUpdate(issue._id, { $set: { identified_by: identifiedByUser } }, { new: true })
     req.flash('success', "Successfully added an issue")
     //TODO to set priority, status, submitted by, assigned to
     res.redirect(`/issues/${issue._id}`)
@@ -61,7 +60,6 @@ router.post('/', isLoggedIn, wrapAsync(async (req, res) => {
 
 router.get('/:id', wrapAsync(async (req, res, next) => {
     const issue = await Issue.findById(req.params.id).populate('assigned_to').populate('identified_by');
-    console.log(issue)
     if (!issue) {
         req.flash('error', 'Issue not found!');
         return res.redirect('/issues');
@@ -72,20 +70,24 @@ router.get('/:id', wrapAsync(async (req, res, next) => {
 
 //TODO define edit access and all
 router.get('/:id/edit', isLoggedIn, hasAccess, wrapAsync(async (req, res) => {
-    const issue = await (await Issue.findById(req.params.id)).populate('assigned_to').populate('identified_by');
+    const issue = await Issue.findById(req.params.id).populate('assigned_to').populate('identified_by');
     if (!issue) {
         req.flash('error', 'Issue not found!');
         return res.redirect('/issues');
     }
+    console.log(issue)
     res.render('issues/editForm', { issue });
 }))
 router.put('/:id', isLoggedIn, hasAccess, wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const issue = await Issue.findByIdAndUpdate(id, { ...req.body.issue });
+    const username = req.body.tempUsername;
+    const assignedUser = await User.findOne({ username: username });
+    let currentIssue = { ...req.body.issue };
+    currentIssue.assigned_to = assignedUser._id;
+    const issue = await Issue.findByIdAndUpdate(id, { ...currentIssue }, { new: true }).populate('assigned_to').populate('identified_by');
     req.flash('success', "Successfully updated the issue")
     res.redirect(`/issues/${issue._id}`)
 }));
-
 
 
 
