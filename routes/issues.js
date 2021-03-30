@@ -59,7 +59,7 @@ router.post('/', isLoggedIn, wrapAsync(async (req, res) => {
 
 
 router.get('/:id', wrapAsync(async (req, res, next) => {
-    const issue = await Issue.findById(req.params.id).populate('assigned_to').populate('identified_by').populate('comments');
+    const issue = await Issue.findById(req.params.id).populate('assigned_to').populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });
     if (!issue) {
         req.flash('error', 'Issue not found!');
         return res.redirect('/issues');
