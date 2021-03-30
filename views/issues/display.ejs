@@ -47,8 +47,8 @@
         </div>
 
         <div class="col-6">
-            <h2>COMMENTS</h2>
             <%  if(currentUser)  {%>
+                <h2>COMMENTS</h2>
                 <form action="/issues/<%=issue._id%>/comments" method="POST" class="mb-3 validated-issue" novalidate>
                     <div class="mb-3">
 
