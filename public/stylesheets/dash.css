@@ -2,9 +2,10 @@
     DEMO STYLE
 */
 
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+/* @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"; */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     /* background: #fafafa; */
     background-color: #041034;
     /* color: #fafafa; */
@@ -12,9 +13,9 @@ body {
 }
 
 p {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     font-size: 1.1em;
-    font-weight: 300;
+    font-weight: 500;
     line-height: 1.7em;
     color: #999;
 }

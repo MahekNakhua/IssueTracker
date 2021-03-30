@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Comment = require('./comments')
 
 const issueSchema = new Schema({
     title: String,
@@ -22,8 +23,23 @@ const issueSchema = new Schema({
         enum: ['High', 'Medium', 'Low']
     },
     images: [String], //url
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
 });
 
+issueSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Comment.deleteMany({
+            _id: {
+                $in: doc.comments
+            }
+        })
+    }
+})
 
 // TODO default values and required keywords
 

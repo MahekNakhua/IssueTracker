@@ -59,7 +59,7 @@
                 </li>
                 <li>
                     <a href="#">
-                        <i class="fas fa-briefcase"></i>
+                        <i class="fas fa-folder-open"></i>
                         Projects
                     </a>
                 </li>
@@ -71,39 +71,39 @@
                 </li>
                 <li>
                     <a href="/issues/new">
-                        <i class="fas fa-image"></i>
+                        <i class="fas fa-edit "></i>
                         New IssueTemp
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#">
                         <i class="fas fa-question"></i>
                         FAQ
                     </a>
-                </li>
-                <% if (currentUser){ %> 
+                </li> -->
+                <% if (currentUser){ %>
                     <li>
                         <a href="#">
-                            <i class="fas fa-paper-plane"></i>
+                            <i class="fas fa-user"></i>
                             <%=currentUser.username%>
                         </a>
                     </li>
-                <% } %> 
+                    <% } %>
             </ul>
 
             <ul class="list-unstyled CTAs">
-                <% if (!currentUser){ %> 
-                <li>
-                    <a href="/login" class="article">Login</a>
-                </li>
-                <li>
-                    <a href="/register" class="article">Register</a>
-                </li>
-                <% } else { %> 
-                <li>
-                    <a href="/logout" class="article">Logout</a>
-                </li>
-                <% } %> 
+                <% if (!currentUser){ %>
+                    <li>
+                        <a href="/login" class="article">Login</a>
+                    </li>
+                    <li>
+                        <a href="/register" class="article">Register</a>
+                    </li>
+                    <% } else { %>
+                        <li>
+                            <a href="/logout" class="article">Logout</a>
+                        </li>
+                        <% } %>
             </ul>
         </nav>
 

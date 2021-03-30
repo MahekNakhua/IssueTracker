@@ -42,8 +42,12 @@
                 </div>
                 <div class=" mb-3">
                     <label class="form-label" for="assigned_to">Assigned To</label>
+                    <% if(issue.assigned_to && issue.assigned_to.username.length) { %>
                     <input class="form-control" type="text" id="assigned_to" name="tempUsername"
                         value="<%=issue.assigned_to.username%>">
+                    <% } else { %> 
+                    <input class="form-control" type="text" id="assigned_to" name="tempUsername">
+                    <% } %> 
                 </div>
                 <!-- if status is assigned then fill this column -->
                 <!-- not asked during input, job of admin to assign these values -->

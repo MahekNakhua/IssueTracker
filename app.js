@@ -11,8 +11,11 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const flash = require('connect-flash');
-const issueRoutes = require('./routes/issues')
-const userRoutes = require('./routes/user')
+const issueRoutes = require('./routes/issues');
+const userRoutes = require('./routes/user');
+const commentRoutes = require('./routes/comments');
+const Comment = require('./models/comments');
+
 // const {adminSchema, projectmanagerSchema, developerSchema, submitterSchema,projectSchema, issueSchema} = require('./validationSchemas')
 
 // const adminSchema = require('./models/admin')
@@ -87,6 +90,8 @@ app.use((req, res, next) => {
 
 app.use('/', userRoutes);
 app.use('/issues', issueRoutes)
+app.use('/issues/:id/comments', commentRoutes)
+
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found :(', 404))

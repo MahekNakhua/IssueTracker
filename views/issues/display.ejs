@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-6">
             <div class="card mb-3 cardIssue">
                 <img src="<%= issue.images[0]%>" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -22,14 +22,14 @@
                     <li class="list-group-item text-muted cardItems"> Identified By -
                         <%= issue.identified_by.username%>
                     </li>
-                    <% if(issue.assigned_to.username && issue.assigned_to.username.length) { %> 
-                        <% if(issue.status != "Unassigned") { %> 
+                    <% if(issue.assigned_to && issue.assigned_to.username.length) { %>
+                        <% if(issue.status !="Unassigned" ) { %>
                             <li class="list-group-item cardItems"> Assigned To -
                                 <%= issue.assigned_to.username%>
                             </li>
-                        <% } %> 
-                    <% } %> 
-                    <li class="list-group-item cardItems"></li>
+                            <% } %>
+                                <% } %>
+                                    <li class="list-group-item cardItems"></li>
                 </ul>
                 <div class="card-body" style="display: flex; align-items: center; justify-content: space-around;">
                     <a class="card-link btn btn-readMore" href="/issues/<%=issue._id%>/edit">Edit
@@ -43,5 +43,46 @@
                 </div> -->
             </div>
         </div>
+
+        <div class="col-6">
+            <h2>Add A Comment</h2>
+            <form action="/issues/<%=issue._id%>/comments" method="POST" class="mb-3 validated-issue" novalidate>
+                <div class="mb-3">
+
+                    <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="comment[title]" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid title.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-control" type="text" id="description" name="comment[description]"
+                            cols="30" rows="3" required></textarea>
+                        <div class="invalid-feedback">
+                            Please provide a valid description.
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-readMore">Submit</button>
+            </form>
+
+            <% for(let comment of issue.comments) { %>
+                <div class="card mb-3 cardIssue">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= comment.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= comment.description %>
+                        </p>
+                        <form action="/issues/<%=issue._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
+        </div>
     </div>
+
     <a href="/issues">All Issues</a>
