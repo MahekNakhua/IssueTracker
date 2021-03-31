@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { titles, descriptors, statuses, priorities } = require('./seedHelpers');
+const { titles, descriptors, statuses, priorities, seededImages } = require('./seedHelpers');
 const Issue = require('../models/issuesTemp')
 
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
@@ -15,7 +15,15 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
-const sample = array => array[Math.floor(Math.random() * array.length)];
+
+const imageCollector = () => {
+    const n = Math.floor(Math.random() * 5);
+    const arr = [];
+    for (var i = 0; i <= n; i++) {
+        arr.push(seededImages[Math.floor(Math.random() * seededImages.length)])
+    }
+    return arr;
+}
 
 
 const seedDB = async () => {
@@ -24,9 +32,17 @@ const seedDB = async () => {
     for (let i = 0; i < 20; i++) {
         const random1 = Math.floor(Math.random() * titles.length);
         const random2 = Math.floor(Math.random() * descriptors.length);
-        const random3 = Math.floor(Math.random() * statuses.length);
+        // const random3 = Math.floor(Math.random() * statuses.length);
         const random4 = Math.floor(Math.random() * priorities.length)
-        const newIssue = new Issue({ title: titles[random1], description: descriptors[random2], assigned_to: mongoose.Types.ObjectId('605f249133d6e84ff4e02dec'), identified_by: mongoose.Types.ObjectId('6061f3e0f031f63d4c124cfc'), status: statuses[random3], priority: priorities[random4] })
+        const newIssue = new Issue({
+            title: titles[random1],
+            description: descriptors[random2],
+            // assigned_to: mongoose.Types.ObjectId('605f249133d6e84ff4e02dec'),
+            identified_by: mongoose.Types.ObjectId('6061f3e0f031f63d4c124cfc'),
+            status: 'Unassigned',
+            priority: priorities[random4],
+            images: imageCollector(),
+        })
         await newIssue.save();
     }
     console.log("Seeded The Database");

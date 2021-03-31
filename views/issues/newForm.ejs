@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-6 offset-3">
             <h1 class="text-center">New Issue</h1>
-            <form action="/issues" method="POST" novalidate class="validated-issue">
+            <form action="/issues" method="POST" novalidate class="validated-issue" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="issue[title]" required>
@@ -22,36 +22,20 @@
                 <div class="mb-3">
                     <label class="form-label" for="priority">Priority</label>
                     <select class="form-control" id="priority" name="issue[priority]" required>
-                      <option value="High" selected>High</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Low">Low</option>
+                        <option value="High" selected>High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
                     </select>
                 </div>
-                <!-- <div class="mb-3">
-                    <label class="form-label" for="status">Status</label>
-                    <input class="form-control" type="text" id="status" name="issue[status]"
-                        placeholder="Unassigned, Assigned, Resolved" required>
-                    <div class="invalid-feedback">
-                        Please provide a valid status.
-                    </div>
-                </div> -->
                 <div class="mb-3">
-                    <label class="form-label" for="image">Image Url</label>
-                    <input class="form-control" type="text" id="image" name="issue[images]" required>
-                    <div class="invalid-feedback">
-                        Please provide a valid image url.
+                    <div class="form-file custom-file mt-3">
+                        <input type="file" class="form-file-input" id="image" name="imgs" multiple>
+                        <label class="form-file-label" for="image">
+                            <span class="form-file-text custom-file-label">Upload image(s)</span>
+                            <!-- <span class="form-file-button">Browse</span> -->
+                        </label>
                     </div>
                 </div>
-                <!-- <div>
-                    <label for=" identified_by">Identified By</label>
-                    <input type="text" id="identified_by" name="issue[identified_by]">
-                </div> -->
-                <!-- <div>
-                    <label for="assigned_to">Assigned To</label>
-                    <input type="text" id="assigned_to" name="issue[assigned_to]">
-                </div> -->
-                <!-- if status is assigned then fill this column -->
-                <!-- not asked during input, job of admin to assign these values -->
                 <button class="btn btn-sm btn-addIssue">Add Issue</button>
             </form>
         </div>

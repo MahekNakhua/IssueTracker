@@ -56,3 +56,48 @@ module.exports.statuses = [
     'Unassigned',
     'Assigned',
     'Resolved']
+
+
+module.exports.seededImages = [
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215416/IssueTracker/c1_piwdr5.jpg',
+        filename: 'IssueTracker/c1_piwdr5'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215417/IssueTracker/c2_kwh5ps.jpg',
+        filename: 'IssueTracker/c2_kwh5ps'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215418/IssueTracker/c3_qobwcp.jpg',
+        filename: 'IssueTracker/c3_qobwcp'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215416/IssueTracker/c4_hihj1h.jpg',
+        filename: 'IssueTracker/c4_hihj1h'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215415/IssueTracker/c5_fnu5em.jpg',
+        filename: 'IssueTracker/c5_fnu5em'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215415/IssueTracker/c6_tbwfmo.jpg',
+        filename: 'IssueTracker/c6_tbwfmo'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215415/IssueTracker/c7_sj11ez.jpg',
+        filename: 'IssueTracker/c7_sj11ez'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215414/IssueTracker/c8_fqnwnq.jpg',
+        filename: 'IssueTracker/c8_fqnwnq'
+    },
+    {
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215415/IssueTracker/c9_nkjvmb.jpg',
+        filename: 'IssueTracker/c9_nkjvmb'
+    },
+]
+
+// {
+//     url: '',
+//     filename: 'IssueTracker/'
+// },

@@ -1,5 +1,7 @@
 const Issue = require('../models/issuesTemp');
 const User = require('../models/user');
+const { cloudinary } = require("../cloudinary");
+const user = require('../models/user');
 let identifiedByUser;
 
 module.exports.issuesIndex = async (req, res) => {
@@ -27,9 +29,10 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createIssue = async (req, res) => {
     const issue = new Issue(req.body.issue)
-    issue.status = 'Unassigned';
+    issue.status = 'Unassigned'; //default
     identifiedByUser = req.user;
     issue.identified_by = identifiedByUser._id;
+    issue.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     await issue.save();
     req.flash('success', "Successfully added an issue")
     //TODO to set priority, status, submitted by, assigned to
@@ -60,10 +63,36 @@ module.exports.editIssue = async (req, res) => {
     const username = req.body.tempUsername;
     const assignedUser = await User.findOne({ username: username });
     let currentIssue = { ...req.body.issue };
-    currentIssue.assigned_to = assignedUser._id;
+    if (assignedUser && currentIssue.status !== 'Unassigned') {
+        currentIssue.assigned_to = assignedUser._id;
+    }
+
+    if (currentIssue.status === 'Unassigned' && username === '') {
+        currentIssue.assigned_to = null;
+    }
+    else if (currentIssue.status === 'Unassigned') {
+        req.flash('error', "Update Failed : Cannot assign an User to issue for Status --> Unassigned")
+        return res.redirect(`/issues/${id}`)
+    } else if ((currentIssue.status === 'Resolved' || currentIssue.status === 'Assigned') && username === '') {
+        req.flash('error', "Update Failed : Assigned To field cannot be empty for Status --> Assigned, Resolved")
+        return res.redirect(`/issues/${id}`)
+    }
     const issue = await Issue.findByIdAndUpdate(id, { ...currentIssue }, { runValidators: true, new: true }).populate('assigned_to').populate('identified_by');
-    req.flash('success', "Successfully updated the issue")
+    const issueImages = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    issue.images.push(...issueImages);
+    await issue.save()
+
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await issue.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+        console.log(issue);
+    }
+
+    // req.flash('success', "Successfully updated the issue")
     res.redirect(`/issues/${issue._id}`)
+
 }
 
 module.exports.deleteIssue = async (req, res) => {

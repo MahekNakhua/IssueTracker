@@ -4,6 +4,10 @@ const wrapAsync = require('../utils/WrapAsync');
 const Joi = require('joi');
 const { isLoggedIn, hasAccess } = require('../middleware');
 const issueController = require('../controllers/issues');
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
+
 
 // const validateIssue = (req, res, next) => {
 //     const issueSchema = Joi.object({
@@ -36,7 +40,13 @@ router.get('/', wrapAsync(issueController.issuesIndex))
 
 
 router.get('/new', isLoggedIn, issueController.renderNewForm)
-router.post('/', isLoggedIn, wrapAsync(issueController.createIssue))
+router.post('/', isLoggedIn, upload.array('imgs'), wrapAsync(issueController.createIssue))
+
+// router.get('/new', issueController.renderNewForm)
+// router.post('/', upload.array('imgs'), (req, res) => {
+//     console.log(req.body, req.files);
+//     res.send("works")
+// })
 
 
 router.get('/:id', wrapAsync(issueController.displayIssue))
@@ -44,7 +54,7 @@ router.get('/:id', wrapAsync(issueController.displayIssue))
 
 //TODO define edit access and all
 router.get('/:id/edit', isLoggedIn, hasAccess, wrapAsync(issueController.renderEditForm))
-router.put('/:id', isLoggedIn, hasAccess, wrapAsync(issueController.editIssue))
+router.put('/:id', isLoggedIn, hasAccess, upload.array('imgs'), wrapAsync(issueController.editIssue))
 
 
 router.delete('/:id', isLoggedIn, hasAccess, wrapAsync(issueController.deleteIssue))

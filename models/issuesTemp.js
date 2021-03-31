@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Comment = require('./comments')
 
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+ImageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_200');
+});
+
+const options = { toJSON: { virtuals: true } };
+
 const issueSchema = new Schema({
     title: String,
     description: String,
@@ -22,14 +33,14 @@ const issueSchema = new Schema({
         type: String,
         enum: ['High', 'Medium', 'Low']
     },
-    images: [String], //url
+    images: [ImageSchema],
     comments: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Comment'
         }
     ]
-});
+}, options);
 
 issueSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {

@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -14,19 +17,8 @@ const flash = require('connect-flash');
 const issueRoutes = require('./routes/issues');
 const userRoutes = require('./routes/user');
 const commentRoutes = require('./routes/comments');
-const Comment = require('./models/comments');
+const User = require('./models/user');
 
-// const {adminSchema, projectmanagerSchema, developerSchema, submitterSchema,projectSchema, issueSchema} = require('./validationSchemas')
-
-// const adminSchema = require('./models/admin')
-// const projectmanagerSchema = require('./models/projectManager')
-// const developerSchema = require('./models/developer')
-// const submitterSchema = require('./models/submitter')
-// const projectSchema = require('./models/project')
-// const issueSchema = require('./models/issue')
-
-const Issue = require('./models/issuesTemp')
-const User = require('./models/user')
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
     useNewUrlParser: true,
     useCreateIndex: true,
