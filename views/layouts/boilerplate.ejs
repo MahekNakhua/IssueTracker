@@ -35,12 +35,12 @@
             <div class="sidebar-header">
                 <button type="button" id="sidebarCollapse" class="btn btn-dashboard">
                     <h3 style="margin: 0px;">Dashboard</h3>
-                    <strong> <i class="fas fa-align-left"></i></strong>
+                    <strong> <i class="fas fa-align-justify"></i></strong>
                 </button>
             </div>
 
             <ul class="list-unstyled components">
-                <li class="active">
+                <!-- <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-home"></i>
                         Home
@@ -56,14 +56,14 @@
                             <a href="#">Home 3</a>
                         </li>
                     </ul>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <a href="#">
                         <i class="fas fa-folder-open"></i>
                         Projects
                     </a>
-                </li>
-                <li>
+                </li> -->
+                <li class="active">
                     <a href="/issues">
                         <i class="fas fa-copy"></i>
                         Issues
@@ -72,7 +72,7 @@
                 <li>
                     <a href="/issues/new">
                         <i class="fas fa-edit "></i>
-                        New IssueTemp
+                        Add Issue
                     </a>
                 </li>
                 <!-- <li>
@@ -110,29 +110,25 @@
         <!-- Page Content  -->
         <div id="content">
 
-            <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            </nav> -->
-
-            <!-- <div class="line"></div> -->
-
             <% if(success && success.length) {%>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <%= success %>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <% } %>
+            <% } %>
 
-                    <% if(error && error.length) {%>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <%= error %>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                        </div>
-                        <% } %>
-                            <%- body %>
+            <% if(error && error.length) {%>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <% } %>
+                            
+            <%- body %>
 
 
         </div>

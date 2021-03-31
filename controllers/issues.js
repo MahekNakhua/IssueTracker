@@ -3,8 +3,22 @@ const User = require('../models/user');
 let identifiedByUser;
 
 module.exports.issuesIndex = async (req, res) => {
-    const issues = await Issue.find({});
-    res.render('issues/index', { issues })
+    const { statusFilter, priorityFilter } = req.query;
+    if (statusFilter && priorityFilter) {
+        const issues = await Issue.find({ priority: priorityFilter, status: statusFilter });
+        res.render('issues/index', { issues, filter: `Issues with ${priorityFilter} Priority and ${statusFilter} Status`.toUpperCase() })
+    }
+    else if (priorityFilter) {
+        const issues = await Issue.find({ priority: priorityFilter });
+        res.render('issues/index', { issues, filter: `Issues with ${priorityFilter} Priority`.toUpperCase() })
+    } else if (statusFilter) {
+        const issues = await Issue.find({ status: statusFilter });
+        res.render('issues/index', { issues, filter: `Issues with Status - ${statusFilter}`.toUpperCase() })
+    }
+    else {
+        const issues = await Issue.find({});
+        res.render('issues/index', { issues, filter: 'All Issues'.toUpperCase() })
+    }
 }
 
 module.exports.renderNewForm = (req, res) => {
@@ -47,7 +61,7 @@ module.exports.editIssue = async (req, res) => {
     const assignedUser = await User.findOne({ username: username });
     let currentIssue = { ...req.body.issue };
     currentIssue.assigned_to = assignedUser._id;
-    const issue = await Issue.findByIdAndUpdate(id, { ...currentIssue }, { new: true }).populate('assigned_to').populate('identified_by');
+    const issue = await Issue.findByIdAndUpdate(id, { ...currentIssue }, { runValidators: true, new: true }).populate('assigned_to').populate('identified_by');
     req.flash('success', "Successfully updated the issue")
     res.redirect(`/issues/${issue._id}`)
 }
