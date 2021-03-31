@@ -34,3 +34,7 @@ module.exports.logout = (req, res) => {
     req.logout();
     res.redirect('/issues');
 }
+
+module.exports.personalProfile = (req, res) => {
+    res.render('users/profile');
+}
