@@ -1,0 +1,17 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row mt-5">
+    <div class="col-6 offset-3">
+        <div class="card mb-3 cardIssue">
+            <div class="card-body">
+                <h5 class="card-title">Issue Tracker</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item cardItems">Current Users : <%= userCount %></li>
+                <li class="list-group-item cardItems">Total Issues : <%= issueCount  %></li>
+                <li class="list-group-item cardItems">Total Comments : <%= commentCount %></li>
+            </ul>
+        </div>
+    </div>
+</div>
+

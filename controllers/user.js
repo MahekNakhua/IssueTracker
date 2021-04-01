@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Issue = require('../models/issuesTemp');
 
 module.exports.renderRegisterForm = (req, res) => {
     res.render('users/register');
@@ -35,6 +36,23 @@ module.exports.logout = (req, res) => {
     res.redirect('/issues');
 }
 
-module.exports.personalProfile = (req, res) => {
-    res.render('users/profile');
+module.exports.personalProfile = async (req, res) => {
+    //TODO optimize the query
+    const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });;
+    let issueCount = 0;
+    let commentCount = 0;
+    for (i of issues) {
+        if (i.identified_by.username === req.user.username) {
+            issueCount++
+        }
+        if (i.comments && i.comments.length > 0) {
+            for (let k = 0; k < i.comments.length; k++) {
+                if (i.comments[k].author.username === req.user.username) {
+                    commentCount++;
+                }
+            }
+        }
+    }
+
+    res.render('users/profile', { issueCount, commentCount });
 }

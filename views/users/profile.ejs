@@ -1,9 +1,18 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row">
-    <div class="col-6 offset-3">
-        <p>Userame : <%= currentUser.username  %> </p>
-        <p>Email: <%= currentUser.email  %></p> 
-        <p>Role: <%= currentUser.role  %> </p>
+    <div class="row mt-5">
+        <div class="col-6 offset-3">
+            <div class="card mb-3 cardIssue">
+                <div class="card-body">
+                    <h5 class="card-title">My Stats</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item cardItems">Userame : <%= currentUser.username  %></li>
+                    <li class="list-group-item cardItems">Email : <%= currentUser.email  %></li>
+                    <li class="list-group-item cardItems">Role : <%= currentUser.role  %></li>
+                    <li class="list-group-item cardItems">Issues By Me : <%= issueCount  %></li>
+                    <li class="list-group-item cardItems">Comments By Me : <%= commentCount %></li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>

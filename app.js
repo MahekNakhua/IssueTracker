@@ -19,6 +19,8 @@ const userRoutes = require('./routes/user');
 const commentRoutes = require('./routes/comments');
 const User = require('./models/user');
 
+const Issue = require('./models/issuesTemp');
+
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -76,14 +78,24 @@ app.use((req, res, next) => {
 
 
 
-// app.get('/', (req, res) => {
-//     res.render('homepage')
-// })
 
 app.use('/', userRoutes);
 app.use('/issues', issueRoutes)
 app.use('/issues/:id/comments', commentRoutes)
 
+app.get('/home', async (req, res) => {
+    const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });;
+    let issueCount = 0;
+    let commentCount = 0;
+    for (i of issues) {
+        issueCount++
+        commentCount += i.comments.length
+    }
+
+    const users = await User.find({});
+    let userCount = users.length
+    res.render('home', { issueCount, commentCount, userCount });
+});
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found :(', 404))
