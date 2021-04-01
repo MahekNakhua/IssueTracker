@@ -78,12 +78,6 @@
                         Add Issue
                     </a>
                 </li>
-                <!-- <li>
-                    <a href="#">
-                        <i class="fas fa-question"></i>
-                        FAQ
-                    </a>
-                </li> -->
                 <% if (currentUser){ %>
                     <li>
                         <a href="/profile">
@@ -91,23 +85,28 @@
                             <%=currentUser.username%>
                         </a>
                     </li>
-                    <% } %>
+                    <li>
+                        <a href="/logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
+                <% } else { %>
+                    <li>
+                        <a href="/login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/register">
+                            <i class="fas fa-user-plus"></i>
+                            Register
+                        </a>
+                    </li>
+                <% } %> 
             </ul>
 
-            <ul class="list-unstyled CTAs">
-                <% if (!currentUser){ %>
-                    <li>
-                        <a href="/login" class="article">Login</a>
-                    </li>
-                    <li>
-                        <a href="/register" class="article">Register</a>
-                    </li>
-                    <% } else { %>
-                        <li>
-                            <a href="/logout" class="article">Logout</a>
-                        </li>
-                        <% } %>
-            </ul>
         </nav>
 
         <!-- Page Content  -->

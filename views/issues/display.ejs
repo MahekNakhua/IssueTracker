@@ -113,7 +113,7 @@
                         <p class="card-text"><%= comment.description %></p>
                         <%  if( currentUser && comment.author.equals(currentUser._id))  {%>
                             <form action="/issues/<%=issue._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                                <button class="btn btn-sm btn-danger">Delete</button>
+                                <button class="btn btn-sm btn-teal">Delete</button>
                             </form>
                         <% } %> 
                     </div>

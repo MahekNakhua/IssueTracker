@@ -128,7 +128,7 @@ span {
 
 #sidebar ul.components {
     padding: 20px 0;
-    border-bottom: 1px solid #47748b;
+    /* border-bottom: 1px solid #47748b; */
 }
 
 #sidebar ul li a {
@@ -328,18 +328,6 @@ a.article:hover {
 
 /* newIssue.ejs */
 
-.btn-addIssue, .btn-addIssue:hover, .btn-addIssue:active, .btn-addIssue:visited{
-    background-color: #041034;
-    color: #3D7EFF;
-    border-color: #3D7EFF;
-    /* background-color: #01081F; */
-}
-
-.btn-addIssue:hover{
-    background-color: #3D7EFF;
-    color: #01081F;
-}
-
 .form-control, .form-control:hover, .form-control:active, .form-control:visited{
     color:#01081F;
     background-color: rgb(226, 245, 250);
@@ -373,4 +361,44 @@ a.article:hover {
 
 .cardDeleteImg{
     margin-bottom: 1rem;
+}
+
+
+/* BUTTONS.... */
+
+
+.btn-purple, .btn-purle:hover, .btn-purple:active, .btn-purple:visited{
+    color: #7f5fd1;
+    background-color: #041034;
+    border-color: #7f5fd1;
+}
+
+.btn-purple:hover{
+    letter-spacing: 0.07rem;
+    background-color: #7f5fd1 ;
+    color:#fafafa;
+}
+
+.btn-blue, .btn-blue:hover, .btn-blue:active, .btn-blue:visited{
+    color: #6297ff;
+    background-color: #041034;
+    border-color: #6297ff;
+}
+
+.btn-blue:hover{
+    letter-spacing: 0.07rem;
+    background-color: #6297ff ;
+    color:#fafafa;
+}
+
+.btn-teal, .btn-teal:hover, .btn-teal:active, .btn-teal:visited{
+    color: #128DB9;
+    background-color: #01081F;
+    border-color: #128DB9;
+}
+
+.btn-teal:hover{
+    letter-spacing: 0.07rem;
+    background-color: #128DB9 ;
+    color:#fafafa;
 }
