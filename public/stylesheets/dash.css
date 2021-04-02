@@ -374,7 +374,6 @@ a.article:hover {
 }
 
 .btn-purple:hover{
-    letter-spacing: 0.07rem;
     background-color: #7f5fd1 ;
     color:#fafafa;
 }
@@ -386,7 +385,6 @@ a.article:hover {
 }
 
 .btn-blue:hover{
-    letter-spacing: 0.07rem;
     background-color: #6297ff ;
     color:#fafafa;
 }
@@ -398,7 +396,6 @@ a.article:hover {
 }
 
 .btn-teal:hover{
-    letter-spacing: 0.07rem;
     background-color: #128DB9 ;
     color:#fafafa;
 }

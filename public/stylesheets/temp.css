@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+html {
+    min-height: 100%;
+}
+
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    color:  rgb(226, 245, 250);
+    background: rgb(7,51,93);
+    background: linear-gradient(0deg, rgba(7,51,93,1) 0%, rgba(1,8,31,1) 100%);
+}
+
+p {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1em;
+    font-weight: 500;
+    line-height: 1.7em;
+    color: #999;
+}
+
+
+.btn-submit, .btn-submit:hover, .btn-submit:active, .btn-submit:visited{
+    color: #fafafa;
+    background-color: #6C63FF;
+    border-color: #6C63FF;
+}
+
+
+.btn-reg, .btn-reg:hover, .btn-reg:active, .btn-reg:visited{
+    color: #fafafa;
+    background-color: #e45746;
+    border-color: #e45746;
+}

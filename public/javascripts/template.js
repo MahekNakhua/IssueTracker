@@ -1,14 +1,3 @@
-$(document).ready(function () {
-
-    bsCustomFileInput.init()
-
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
-
-});
-
-
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
     'use strict';
@@ -27,3 +16,19 @@ $(document).ready(function () {
         });
     }, false);
 })();
+
+
+//FOR LOGIN PAGE
+$(function () {
+    'use strict';
+
+    $('.form-control').on('input', function () {
+        var $field = $(this).closest('.form-group');
+        if (this.value) {
+            $field.addClass('field--not-empty');
+        } else {
+            $field.removeClass('field--not-empty');
+        }
+    });
+
+});
