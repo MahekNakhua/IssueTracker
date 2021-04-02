@@ -30,6 +30,11 @@ p {
 
 .btn-reg, .btn-reg:hover, .btn-reg:active, .btn-reg:visited{
     color: #fafafa;
-    background-color: #e45746;
-    border-color: #e45746;
+    background-color: #C3C2ED;
+    border-color: #C3C2ED;
+}
+
+.overrideBlack{
+    color: black;
+    font-weight: bold;
 }

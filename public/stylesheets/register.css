@@ -6,9 +6,11 @@
 	--light: #f0eff3;
 	--black: #000000;
 	--dark-blue: #041034;
-	--dark-light: #353746;
+	--dark-light: #393b4ec0;
 	--red: #da2c4d;
 	--yellow: #f8ab37;
+	--pastel-blue: #a6c1ee;
+	--pastel-pink: #fbc2eb;
 	--grey: #ecedf3;
 }
 
@@ -104,8 +106,7 @@ mark{
 	height: 6px;
 	border-radius: 4px;
 	/* background-image: linear-gradient(298deg, var(--red), var(--yellow)); */
-	background: rgb(221,214,243);
-	background: linear-gradient(90deg, rgba(221,214,243,1) 0%, rgba(250,172,168,1) 100%);
+	background-image: linear-gradient(298deg, var(--pastel-blue), var(--pastel-pink));
 	z-index: 100 !important;
 }
 .checkbox:checked + label:before,
@@ -187,7 +188,8 @@ mark{
 	width: 100%;
 	height: 100%;
 	border-radius: 4px;
-	background-image: linear-gradient(298deg, var(--red), var(--yellow));
+	/* background-image: linear-gradient(298deg, var(--red), var(--yellow)); */
+	background-image: linear-gradient(298deg, var(--pastel-blue), var(--pastel-pink));
 	z-index: -1;
 }
 .checkbox-tools:checked + label .uil,
