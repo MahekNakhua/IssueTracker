@@ -39,7 +39,11 @@ const issueSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Comment'
         }
-    ]
+    ],
+    related_project: {
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
+    }
 }, options);
 
 issueSchema.post('findOneAndDelete', async function (doc) {
@@ -55,5 +59,3 @@ issueSchema.post('findOneAndDelete', async function (doc) {
 // TODO default values and required keywords
 
 module.exports = mongoose.model('Issue', issueSchema);
-
-// CRUD FOR NEW ISSUE BY SUBMITTER

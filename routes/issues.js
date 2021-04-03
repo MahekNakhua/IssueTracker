@@ -42,12 +42,6 @@ router.get('/', wrapAsync(issueController.issuesIndex))
 router.get('/new', isLoggedIn, issueController.renderNewForm)
 router.post('/', isLoggedIn, upload.array('imgs'), wrapAsync(issueController.createIssue))
 
-// router.get('/new', issueController.renderNewForm)
-// router.post('/', upload.array('imgs'), (req, res) => {
-//     console.log(req.body, req.files);
-//     res.send("works")
-// })
-
 
 router.get('/:id', wrapAsync(issueController.displayIssue))
 

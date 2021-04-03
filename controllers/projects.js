@@ -1,7 +1,9 @@
 const Project = require('../models/project');
+const Issue = require('../models/issuesTemp')
 const User = require('../models/user');
-let createdByUser;
+const { cloudinary } = require("../cloudinary");
 const mongoose = require('mongoose');
+let createdByUser;
 
 module.exports.projectsIndex = async (req, res) => {
     const projects = await Project.find({});
@@ -75,6 +77,16 @@ module.exports.editProject = async (req, res) => {
 
 module.exports.deleteProject = async (req, res) => {
     const { id } = req.params;
+    const project = await Project.findById(id);
+    for (issue of project.related_issues) {
+        const currentIssue = await Issue.findById(issue._id);
+        if (currentIssue.images) {
+            for (let img of currentIssue.images) {
+                await cloudinary.uploader.destroy(img.filename);
+            }
+        }
+        await Issue.findByIdAndDelete(issue._id);
+    }
     await Project.findByIdAndDelete(id);
     req.flash('success', "Successfully deleted the project")
     res.redirect('/projects');

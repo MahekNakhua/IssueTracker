@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { titles, descriptors, statuses, priorities, seededImages } = require('./seedHelpers');
 const Issue = require('../models/issuesTemp')
+const Project = require('../models/project');
+const project = require('../models/project');
 
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
     useNewUrlParser: true,
@@ -42,9 +44,19 @@ const seedDB = async () => {
             status: 'Unassigned',
             priority: priorities[random4],
             images: imageCollector(),
+            related_project: mongoose.Types.ObjectId('60689ff58799211de8efafc8'),
         })
         await newIssue.save();
     }
+
+    const proj = await Project.findById(mongoose.Types.ObjectId('60689ff58799211de8efafc8'));
+
+    const allIssues = await Issue.find({}).populate('related_project');
+    for (issue of allIssues) {
+        proj.related_issues.push(issue._id)
+    }
+    await proj.save();
+
     console.log("Seeded The Database");
 }
 

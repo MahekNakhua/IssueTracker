@@ -68,8 +68,8 @@ module.exports.seededImages = [
         filename: 'IssueTracker/c2_kwh5ps'
     },
     {
-        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215418/IssueTracker/c3_qobwcp.jpg',
-        filename: 'IssueTracker/c3_qobwcp'
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617474933/IssueTracker/c3_d277pn.jpg',
+        filename: 'IssueTracker/c3_d277pn'
     },
     {
         url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215416/IssueTracker/c4_hihj1h.jpg',
@@ -80,8 +80,9 @@ module.exports.seededImages = [
         filename: 'IssueTracker/c5_fnu5em'
     },
     {
-        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215415/IssueTracker/c6_tbwfmo.jpg',
-        filename: 'IssueTracker/c6_tbwfmo'
+        url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617474925/IssueTracker/c6_jo9oh4.jpg',
+        filename: 'IssueTracker/c6_jo9oh4'
+
     },
     {
         url: 'https://res.cloudinary.com/dwzhkdubz/image/upload/v1617215415/IssueTracker/c7_sj11ez.jpg',

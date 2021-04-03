@@ -1,5 +1,6 @@
 const Issue = require('../models/issuesTemp');
 const User = require('../models/user');
+const Project = require('../models/project');
 const { cloudinary } = require("../cloudinary");
 let identifiedByUser;
 
@@ -29,12 +30,20 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createIssue = async (req, res) => {
     const issue = new Issue(req.body.issue)
     issue.status = 'Unassigned'; //default
-    identifiedByUser = req.user;
-    issue.identified_by = identifiedByUser._id;
+    issue.identified_by = req.user._id;
     issue.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    const projTitle = req.body.relatedProj;
+    const project = await Project.findOne({ title: projTitle });
+    if (!project) {
+        req.flash('error', "Invalid Project Title")
+        return res.redirect('/issues/new')
+    }
+    project.related_issues.push(issue._id);
+    issue.related_project = project._id;
+    // console.log(project, issue)
     await issue.save();
+    await project.save();
     req.flash('success', "Successfully added an issue")
-    //TODO to set priority, status, submitted by, assigned to
     res.redirect(`/issues/${issue._id}`)
 }
 
@@ -53,7 +62,6 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash('error', 'Issue not found!');
         return res.redirect('/issues');
     }
-    console.log(issue)
     res.render('issues/editForm', { issue });
 }
 
@@ -92,7 +100,7 @@ module.exports.editIssue = async (req, res) => {
             await cloudinary.uploader.destroy(filename);
         }
         await issue.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
-        console.log(issue);
+        // console.log(issue);
     }
 
     // req.flash('success', "Successfully updated the issue")
@@ -102,6 +110,14 @@ module.exports.editIssue = async (req, res) => {
 
 module.exports.deleteIssue = async (req, res) => {
     const { id } = req.params;
+    const issue = await Issue.findById(id).populate('related_project');
+    const projId = issue.related_project
+    if (issue.images) {
+        for (let img of issue.images) {
+            await cloudinary.uploader.destroy(img.filename);
+        }
+    }
+    await Project.findByIdAndUpdate(projId, { $pull: { related_issues: id } });
     await Issue.findByIdAndDelete(id);
     req.flash('success', "Successfully deleted the issue")
     res.redirect('/issues');

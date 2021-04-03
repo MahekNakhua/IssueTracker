@@ -34,10 +34,16 @@
         </div>
 
         <div class="col-6">
-            <%  if(currentUser)  {%>
-                <h2>ISSUES</h2>
-               ---display issues---
-               <% } %> 
+            <h2><%= project.related_issues.length%> ISSUES </h2>
+            <%  if(project.related_issues && project.related_issues.length > 0)  {%>
+                <% for (issue of project.related_issues) {%> 
+                    <div>
+                        <a href="/issues/<%=issue._id%>">
+                            <%= issue.title %>
+                        </a>
+                    </div>
+                <% } %> 
+            <% } %> 
         </div>
 
     </div>

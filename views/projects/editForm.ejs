@@ -29,16 +29,6 @@
                             <input class="form-control" type="text" id="assigned_to" name="tempUsername">
                     <% } %>
                 </div>
-
-                <div class=" mb-3">
-                    <label class="form-label" for="related_issues">Related Issues</label>
-                    <% if(project.related_issues && project.related_issues.title) { %>
-                        <input class="form-control" type="text" id="assigned_to" name="tempIssue"
-                            value="<%=project.related_issues.title%>" placeholder="enter issue title">
-                    <% } else { %>
-                            <input class="form-control" type="text" id="assigned_to" name="tempIssue" placeholder="enter issue title">
-                    <% } %>
-                </div>
     
                 <button class="btn btn-blue">Update Project</button>
             </form>

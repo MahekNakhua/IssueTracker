@@ -46,13 +46,13 @@
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-muted cardItems"> Priority -
+                    <li class="list-group-item cardItems"> Priority -
                         <%= issue.priority%>
                     </li>
-                    <li class="list-group-item text-muted cardItems"> Status -
+                    <li class="list-group-item cardItems"> Status -
                         <%= issue.status%>
                     </li>
-                    <li class="list-group-item text-muted cardItems"> Identified By -
+                    <li class="list-group-item cardItems"> Identified By -
                         <%= issue.identified_by.username%>
                     </li>
                     <% if(issue.assigned_to && issue.assigned_to.username.length) { %>
@@ -61,6 +61,11 @@
                                 <%= issue.assigned_to.username%>
                             </li>
                         <% } %>
+                    <% } %>
+                    <% if(issue.related_project) { %>
+                            <li class="list-group-item text-right text-muted cardItems">
+                                <a href="/projects/<%=issue.related_project%>">- Go To Related Project -</a>
+                            </li>
                     <% } %>
                     <li class="list-group-item cardItems"></li>
                 </ul>

@@ -5,10 +5,6 @@ const { isLoggedIn, hasAccess, isAdmin, isPM, hasProjectAccess } = require('../m
 const projController = require('../controllers/projects');
 
 
-
-// router.get('/', wrapAsync(projController.demoNew))
-
-
 router.get('/', wrapAsync(projController.projectsIndex))
 
 router.get('/new', isLoggedIn, isAdmin, projController.renderNewForm)
