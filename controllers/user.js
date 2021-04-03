@@ -26,14 +26,14 @@ module.exports.renderLoginForm = (req, res) => {
 }
 
 module.exports.login = (req, res) => {
-    const redirectUrl = req.session.returnTo || '/issues';
+    const redirectUrl = req.session.returnTo || '/home';
     delete req.session.returnTo;
     res.redirect(redirectUrl);
 }
 
 module.exports.logout = (req, res) => {
     req.logout();
-    res.redirect('/issues');
+    res.redirect('/home');
 }
 
 module.exports.personalProfile = async (req, res) => {

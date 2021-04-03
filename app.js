@@ -17,8 +17,9 @@ const flash = require('connect-flash');
 const issueRoutes = require('./routes/issues');
 const userRoutes = require('./routes/user');
 const commentRoutes = require('./routes/comments');
-const User = require('./models/user');
+const projectRoutes = require('./routes/projects');
 
+const User = require('./models/user');
 const Issue = require('./models/issuesTemp');
 
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
@@ -82,6 +83,8 @@ app.use((req, res, next) => {
 app.use('/', userRoutes);
 app.use('/issues', issueRoutes)
 app.use('/issues/:id/comments', commentRoutes)
+app.use('/projects', projectRoutes)
+
 
 app.get('/home', async (req, res) => {
     const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });;

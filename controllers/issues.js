@@ -1,7 +1,6 @@
 const Issue = require('../models/issuesTemp');
 const User = require('../models/user');
 const { cloudinary } = require("../cloudinary");
-const user = require('../models/user');
 let identifiedByUser;
 
 module.exports.issuesIndex = async (req, res) => {
@@ -58,11 +57,17 @@ module.exports.renderEditForm = async (req, res) => {
     res.render('issues/editForm', { issue });
 }
 
+//set user access
 module.exports.editIssue = async (req, res) => {
     const { id } = req.params;
     const username = req.body.tempUsername;
     const assignedUser = await User.findOne({ username: username });
     let currentIssue = { ...req.body.issue };
+    if (!assignedUser) {
+        req.flash('error', "Update Failed : Invalid User")
+        return res.redirect(`/issues/${id}`)
+    }
+
     if (assignedUser && currentIssue.status !== 'Unassigned') {
         currentIssue.assigned_to = assignedUser._id;
     }

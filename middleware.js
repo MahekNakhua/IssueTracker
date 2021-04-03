@@ -21,17 +21,47 @@ module.exports.notAlreadyLoggedin = (req, res, next) => {
     res.redirect(redirectUrl);
 }
 
-
+//Admin, Project Manager, Developer Allowed
 module.exports.hasAccess = async (req, res, next) => {
     const { id } = req.params;
     const issue = await Issue.findById(id);
-    // if (req.user == 'Submitter' || !issue.assigned_to.equals(req.user._id)) {
-    if (req.user.role == 'Submitter') {
+    if (req.user.role === 'Submitter') {
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/issues/${id}`);
     }
     next();
 }
+
+//Only Admin Allowed
+module.exports.isAdmin = async (req, res, next) => {
+    const { id } = req.params;
+    if (req.user.role !== 'Admin') {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/projects`);
+    }
+    next();
+}
+
+//Only Project Manager Allowed
+module.exports.isPM = async (req, res, next) => {
+    const { id } = req.params;
+    if (req.user.role !== 'Project Manager') {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/projects`);
+    }
+    next();
+}
+
+//Admin, Project Manager Allowed
+module.exports.hasProjectAccess = async (req, res, next) => {
+    const { id } = req.params;
+    if (req.user.role !== 'Project Manager' && req.user.role !== 'Admin') {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/projects`);
+    }
+    next();
+}
+
 
 module.exports.isCommentAuthor = async (req, res, next) => {
     const { id, commentId } = req.params;

@@ -19,11 +19,11 @@ const issueSchema = new Schema({
     identified_by: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-    },
+    }, //anyuser
     identified_date: Date,
     assigned_to: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User', //dev by PM
     },
     status: {
         type: String,
