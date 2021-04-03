@@ -1,17 +1,51 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row mt-5">
-    <div class="col-6 offset-3">
-        <div class="card mb-3 cardIssue">
-            <div class="card-body">
-                <h5 class="card-title">Issue Tracker</h5>
+    <div class="row mt-5">
+        <div class="col-6 offset-3">
+            <div class="card mb-3 cardIssue">
+                <div class="card-body">
+                    <h5 class="card-title">Issue Tracker</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item cardItems">Current Users : <%= stats.userCount %>
+                    </li>
+                    <li class="list-group-item cardItems">Total Project : <%= stats.projectCount %>
+                    </li>
+                    <li class="list-group-item cardItems">Total Issues : <%= stats.issueCount %>
+                    </li>
+                    <li class="list-group-item cardItems">Total Comments : <%= stats.commentCount %>
+                    </li>
+
+                    <li class="list-group-item cardItems">Total Admins : <%= stats.userA %>
+                    </li>
+                    <li class="list-group-item cardItems">Total Project Managers : <%= stats.userPM %>
+                    </li>
+                    <li class="list-group-item cardItems">Total Developers : <%= stats.userD %>
+                    </li>
+                    <li class="list-group-item cardItems">Total Submitters : <%= stats.userS %>
+                    </li>
+
+                    <li class="list-group-item cardItems">
+                        Issues of High Priority : <%= stats.priorityHigh%>
+                    </li>
+                    <li class="list-group-item cardItems">
+                        Issues of Medium Priority : <%= stats.priorityMedium%>
+                    </li>
+                    <li class="list-group-item cardItems">
+                        Issues of Low Priority : <%= stats.priorityLow%>
+                    </li>
+
+                    <li class="list-group-item cardItems">
+                        Issues with Status Unassigned : <%= stats.statusUnassigned %>
+                    </li>
+                    <li class="list-group-item cardItems">
+                        Issues with Status Assigned : <%= stats.statusAssigned %>
+                    </li>
+                    <li class="list-group-item cardItems">
+                        Issues with Status Resolved : <%= stats.statusResolved %>
+                    </li>
+
+                </ul>
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item cardItems">Current Users : <%= userCount %></li>
-                <li class="list-group-item cardItems">Total Issues : <%= issueCount  %></li>
-                <li class="list-group-item cardItems">Total Comments : <%= commentCount %></li>
-            </ul>
         </div>
     </div>
-</div>
-

@@ -21,6 +21,7 @@ const projectRoutes = require('./routes/projects');
 
 const User = require('./models/user');
 const Issue = require('./models/issuesTemp');
+const Project = require('./models/project');
 
 mongoose.connect('mongodb://localhost:27017/issueTrackerTemp', {
     useNewUrlParser: true,
@@ -87,17 +88,62 @@ app.use('/projects', projectRoutes)
 
 
 app.get('/home', async (req, res) => {
-    const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });;
+    let projectCount = 0;
     let issueCount = 0;
     let commentCount = 0;
+    let userA = 0;
+    let userPM = 0;
+    let userD = 0;
+    let userS = 0;
+    let priorityHigh = 0;
+    let priorityMedium = 0;
+    let priorityLow = 0;
+    let statusUnassigned = 0;
+    let statusAssigned = 0;
+    let statusResolved = 0;
+
+    const projects = await Project.find({});
+    projectCount = projects.length
+
+    const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });
+    issueCount = issues.length
     for (i of issues) {
-        issueCount++
         commentCount += i.comments.length
+        if (i.status === 'Unassigned') statusUnassigned++;
+        else if (i.status === 'Assigned') statusAssigned++;
+        else statusResolved++;
+
+        if (i.priority === 'High') priorityHigh++
+        else if (i.priority === 'Medium') priorityMedium++
+        else priorityLow++
     }
 
     const users = await User.find({});
-    let userCount = users.length
-    res.render('home', { issueCount, commentCount, userCount });
+    userCount = users.length
+    for (u of users) {
+        if (u.role === 'Admin') userA++
+        else if (u.role === 'Project Manager') userPM++
+        else if (u.role === 'Developer') userD++
+        else userS++
+    }
+
+    const stats = {
+        projectCount,
+        issueCount,
+        userCount,
+        commentCount,
+        userA,
+        userPM,
+        userD,
+        userS,
+        priorityHigh,
+        priorityMedium,
+        priorityLow,
+        statusUnassigned,
+        statusAssigned,
+        statusResolved,
+    }
+    res.render('home', { stats });
 });
 
 app.all('*', (req, res, next) => {
