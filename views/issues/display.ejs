@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6 mt-3">
 
             <div id="issueCarousel" class="carousel slide" data-ride="carousel">
                 <% if (issue.images.length> 1){ %>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-md-6 mt-3">
             <%  if(currentUser)  {%>
                 <h2>COMMENTS</h2>
                 <form action="/issues/<%=issue._id%>/comments" method="POST" class="mb-3 validated-issue" novalidate>

@@ -6,7 +6,7 @@
 	--light: #f0eff3;
 	--black: #000000;
 	--dark-blue: #041034;
-	--dark-light: #393b4ec0;
+	--dark-light: #393b4ede;
 	--red: #da2c4d;
 	--yellow: #f8ab37;
 	--pastel-blue: #a6c1ee;
@@ -211,7 +211,7 @@ mark{
 .checkbox:checked ~ .section .container .row .col-xl-10 .checkbox-budget:not(:checked) + label{
 	background-color: var(--light);
 	-webkit-text-stroke: 1px var(--dark-blue);
-    text-stroke: 1px var(--dark-blue);
+    /* text-stroke: 1px var(--dark-blue); */
 	box-shadow: 0 1x 4px 0 rgba(0, 0, 0, 0.05);
 }
 

@@ -71,11 +71,6 @@ module.exports.editIssue = async (req, res) => {
     const username = req.body.tempUsername;
     const assignedUser = await User.findOne({ username: username });
     let currentIssue = { ...req.body.issue };
-    if (!assignedUser) {
-        req.flash('error', "Update Failed : Invalid User")
-        return res.redirect(`/issues/${id}`)
-    }
-
     if (assignedUser && currentIssue.status !== 'Unassigned') {
         currentIssue.assigned_to = assignedUser._id;
     }
@@ -88,6 +83,11 @@ module.exports.editIssue = async (req, res) => {
         return res.redirect(`/issues/${id}`)
     } else if ((currentIssue.status === 'Resolved' || currentIssue.status === 'Assigned') && username === '') {
         req.flash('error', "Update Failed : Assigned To field cannot be empty for Status --> Assigned, Resolved")
+        return res.redirect(`/issues/${id}`)
+    }
+
+    if (currentIssue.status !== 'Unassigned' && !assignedUser) {
+        req.flash('error', "Update Failed : Invalid User")
         return res.redirect(`/issues/${id}`)
     }
     const issue = await Issue.findByIdAndUpdate(id, { ...currentIssue }, { runValidators: true, new: true }).populate('assigned_to').populate('identified_by');

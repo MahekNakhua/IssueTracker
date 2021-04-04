@@ -143,7 +143,7 @@ app.get('/home', async (req, res) => {
         statusAssigned,
         statusResolved,
     }
-    res.render('home', { stats });
+    res.render('home', { stats, issues, projects });
 });
 
 app.all('*', (req, res, next) => {

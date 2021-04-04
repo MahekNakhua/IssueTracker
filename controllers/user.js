@@ -38,7 +38,7 @@ module.exports.logout = (req, res) => {
 
 module.exports.personalProfile = async (req, res) => {
     //TODO optimize the query
-    const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });;
+    const issues = await Issue.find({}).populate('identified_by').populate({ path: 'comments', populate: { path: 'author' } });
     let issueCount = 0;
     let commentCount = 0;
     for (i of issues) {
