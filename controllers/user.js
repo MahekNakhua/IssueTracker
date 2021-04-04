@@ -56,3 +56,7 @@ module.exports.personalProfile = async (req, res) => {
 
     res.render('users/profile', { issueCount, commentCount });
 }
+
+module.exports.contactUs = (req,res)=>{
+    res.render('users/contactUs')
+}
