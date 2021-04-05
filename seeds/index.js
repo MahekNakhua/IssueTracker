@@ -40,7 +40,7 @@ const seedDB = async () => {
             title: titles[random1],
             description: descriptors[random2],
             // assigned_to: mongoose.Types.ObjectId('605f249133d6e84ff4e02dec'),
-            identified_by: mongoose.Types.ObjectId('6061f3e0f031f63d4c124cfc'),
+            identified_by: mongoose.Types.ObjectId('60637b07d741d00b3c56cc8e'),
             status: 'Unassigned',
             priority: priorities[random4],
             images: imageCollector(),

@@ -53,12 +53,14 @@
                         Projects
                     </a>
                 </li>
-                <li>
-                    <a href="/projects/new">
-                        <i class="fa fa-plus-square"></i>
-                        Add Project
-                    </a>
-                </li>
+                <% if (currentUser && currentUser.role === 'Admin'){ %> 
+                    <li>
+                        <a href="/projects/new">
+                            <i class="fa fa-plus-square"></i>
+                            Add Project
+                        </a>
+                    </li>
+                <% } %> 
                 <li>
                     <a href="/issues">
                         <i class="fas fa-copy"></i>
