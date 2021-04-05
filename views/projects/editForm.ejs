@@ -20,16 +20,13 @@
                     </div>
                 </div>
 
+                <% if (currentUser.role==='Admin'){ %> 
                 <div class=" mb-3">
                     <label class="form-label" for="assigned_to">Assigned To</label>
-                    <% if(project.assigned_to && project.assigned_to.username.length) { %>
-                        <input class="form-control" type="text" id="assigned_to" name="tempUsername"
+                    <input class="form-control" type="text" id="assigned_to" name="tempUsername"
                             value="<%=project.assigned_to.username%>">
-                    <% } else { %>
-                            <input class="form-control" type="text" id="assigned_to" name="tempUsername">
-                    <% } %>
                 </div>
-    
+                <% } %> 
                 <button class="btn btn-blue">Update Project</button>
             </form>
         </div>

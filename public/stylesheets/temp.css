@@ -41,8 +41,7 @@ p {
 
 
   
-  body, button, input {
-    font-family: 'Montserrat', sans-serif;
+  button{
     font-weight: 700;
     letter-spacing: 1.4px;
   }

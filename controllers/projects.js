@@ -57,17 +57,28 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.editProject = async (req, res) => {
     const { id } = req.params;
     const username = req.body.tempUsername;
-    const assignedUser = await User.findOne({ username: username }); //check if PM
-    if (!assignedUser) {
-        req.flash('error', "Update Failed : Invalid User")
-        return res.redirect(`/projects/${id}`)
-    } else if (assignedUser.role !== 'Project Manager') {
-        req.flash('error', "Update Failed : Cannot assign to User who is not a Project Manager")
+    let currentProject;
+    const assignedUser = await User.findOne({ username: username });
+    const tempProj = await Project.findById(id).populate('assigned_to');
+    if (req.user.role === 'Admin') {
+        if (!assignedUser) {
+            req.flash('error', "Update Failed : Invalid User")
+            return res.redirect(`/projects/${id}`)
+        } else if (assignedUser.role !== 'Project Manager') {
+            req.flash('error', "Update Failed : Cannot assign Project to User who is not a Project Manager")
+            return res.redirect(`/projects/${id}`)
+        }
+        currentProject = { ...req.body.project };
+        currentProject.assigned_to = assignedUser._id;
+    } else if (req.user.username === tempProj.assigned_to.username) {
+        currentProject = { ...req.body.project };
+    } else {
+        req.flash('error', "Update Rejected : This project has not been assigned to you!")
         return res.redirect(`/projects/${id}`)
     }
+    //admin can update and change assigned user
+    //only assigned user can update but cannot change assignment
 
-    let currentProject = { ...req.body.project };
-    currentProject.assigned_to = assignedUser._id;
     const project = await Project.findByIdAndUpdate(id, { ...currentProject }, { runValidators: true, new: true }).populate('assigned_to').populate('created_by');
 
     res.redirect(`/projects/${project._id}`)
@@ -91,4 +102,3 @@ module.exports.deleteProject = async (req, res) => {
     req.flash('success', "Successfully deleted the project")
     res.redirect('/projects');
 }
-//TODO delete issues and comments !!

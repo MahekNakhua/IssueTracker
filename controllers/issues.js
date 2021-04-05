@@ -71,15 +71,19 @@ module.exports.editIssue = async (req, res) => {
     const username = req.body.tempUsername;
     const assignedUser = await User.findOne({ username: username });
     let currentIssue = { ...req.body.issue };
-    if (assignedUser && currentIssue.status !== 'Unassigned') {
+
+    if (assignedUser && currentIssue.status !== 'Unassigned' && assignedUser.role === 'Developer') {
         currentIssue.assigned_to = assignedUser._id;
+    } else if (assignedUser && currentIssue.status !== 'Unassigned') {
+        req.flash('error', "Update Failed : Can assign an Issue only to a Developer")
+        return res.redirect(`/issues/${id}`)
     }
 
     if (currentIssue.status === 'Unassigned' && username === '') {
         currentIssue.assigned_to = null;
     }
     else if (currentIssue.status === 'Unassigned') {
-        req.flash('error', "Update Failed : Cannot assign an User to issue for Status --> Unassigned")
+        req.flash('error', "Update Failed : Cannot assign an Issue to User for Status --> Unassigned")
         return res.redirect(`/issues/${id}`)
     } else if ((currentIssue.status === 'Resolved' || currentIssue.status === 'Assigned') && username === '') {
         req.flash('error', "Update Failed : Assigned To field cannot be empty for Status --> Assigned, Resolved")
